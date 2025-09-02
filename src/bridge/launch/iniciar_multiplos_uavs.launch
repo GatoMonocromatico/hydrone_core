@@ -1,0 +1,17 @@
+<launch>
+
+    <group ns="uav1">
+        <node pkg="mavros" type="mavros_node" name="mavros" output="screen">
+            <param name="fcu_url" value="udp://:14557@" />
+            <param name="target_system_id" value="1" />
+        </node>
+    </group>
+
+    <group ns="uav2">
+        <node pkg="mavros" type="mavros_node" name="mavros" output="screen">
+            <param name="fcu_url" value="udp://:14556@" />
+            <param name="target_system_id" value="2" />
+        </node>
+    </group>
+
+</launch>
