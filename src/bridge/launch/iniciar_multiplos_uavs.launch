@@ -4,6 +4,8 @@
         <node pkg="mavros" type="mavros_node" name="mavros" output="screen">
             <param name="fcu_url" value="udp://:14557@" />
             <param name="target_system_id" value="1" />
+            <param name="system_id" value="255" />
+            <param name="component_id" value="240" />
         </node>
     </group>
 
@@ -11,6 +13,8 @@
         <node pkg="mavros" type="mavros_node" name="mavros" output="screen">
             <param name="fcu_url" value="udp://:14556@" />
             <param name="target_system_id" value="2" />
+            <param name="system_id" value="255" />
+            <param name="component_id" value="241" />
         </node>
     </group>
 
