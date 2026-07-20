@@ -1,0 +1,15 @@
+# Missao de exemplo consumida pelo mission_planner_node.py.
+# Cada chave em "vehicles" deve bater com o vehicle_id da ponte correspondente.
+# Coordenadas de exemplo (Baia de Guanabara, RJ) — ajuste para o seu cenario.
+
+vehicles:
+  hydrone_drone:
+    waypoints:
+      - {latitude: -22.9000, longitude: -43.2000, altitude: 30.0, hold_time_s: 5.0}
+      - {latitude: -22.9020, longitude: -43.2030, altitude: 30.0, hold_time_s: 0.0}
+      - {latitude: -22.9040, longitude: -43.1990, altitude: 25.0, hold_time_s: 10.0}
+
+  hydrone_boat:
+    waypoints:
+      - {latitude: -22.9050, longitude: -43.2100, altitude: 0.0, hold_time_s: 0.0}
+      - {latitude: -22.9070, longitude: -43.2080, altitude: 0.0, hold_time_s: 15.0}
