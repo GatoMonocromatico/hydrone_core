@@ -1,0 +1,13 @@
+# Missao de VALIDACAO (Stage 3) — apenas o drone (Copter).
+# Waypoints ~40 m a partir do home padrao do SITL (CMAC: -35.363262,
+# 149.165237). Altitude = altitude reportada em voo pairado (~633.5 m,
+# elipsoide WGS84 = 603.5 solo + 30 m de decolagem manual) -> "mantem a
+# altura atual", seguro seja o frame do setpoint AMSL ou elipsoide.
+# reached e 2D (lat/lon); altitude nao afeta a deteccao de chegada.
+
+vehicles:
+  hydrone_drone:
+    waypoints:
+      - {latitude: -35.3629017, longitude: 149.1652370, altitude: 633.5, hold_time_s: 0.0}
+      - {latitude: -35.3629017, longitude: 149.1656778, altitude: 633.5, hold_time_s: 10.0}
+      - {latitude: -35.3632620, longitude: 149.1656778, altitude: 633.5, hold_time_s: 0.0}

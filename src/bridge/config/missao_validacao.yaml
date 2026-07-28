@@ -1,0 +1,18 @@
+# Missao de VALIDACAO FINAL (Stage 3) — drone + barco SIMULTANEOS.
+# Um unico planejador comanda os dois; cada veiculo tem sua propria maquina
+# de estados avancando em paralelo. Waypoints escolhidos longe da posicao
+# atual dos veiculos (~40 m a leste do home) para exigir deslocamento real
+# (sem artefato de "chegou sem se mover"). Caminhos distintos: drone ao
+# Norte (no ar, alt AMSL ~633.5), barco a Oeste/Sul (superficie, alt 0).
+# Home padrao do SITL: CMAC -35.363262, 149.165237.
+
+vehicles:
+  hydrone_drone:
+    waypoints:
+      - {latitude: -35.3629017, longitude: 149.1652370, altitude: 633.5, hold_time_s: 8.0}
+      - {latitude: -35.3629017, longitude: 149.1656778, altitude: 633.5, hold_time_s: 0.0}
+
+  hydrone_boat:
+    waypoints:
+      - {latitude: -35.3632620, longitude: 149.1652370, altitude: 0.0, hold_time_s: 8.0}
+      - {latitude: -35.3636213, longitude: 149.1652370, altitude: 0.0, hold_time_s: 0.0}

@@ -1,0 +1,17 @@
+# Missao de VALIDACAO (Stage 3) — apenas o barco (Rover).
+# Waypoints ~40 m a partir do home padrao do SITL (CMAC, Canberra:
+# -35.363261, 149.165230). Distancias >> raio de aceitacao (5 m), entao
+# waypoint_reached so pode disparar depois de deslocamento real -> sem
+# artefato de "chegou sem se mover".
+# Nota: _is_waypoint_reached usa distancia 2D (lat/lon); altitude e ignorada
+# para o barco.
+
+vehicles:
+  hydrone_boat:
+    waypoints:
+      # 40 m ao Norte do home.
+      - {latitude: -35.3629017, longitude: 149.1652300, altitude: 0.0, hold_time_s: 0.0}
+      # 40 m Norte, 40 m Leste — hold de 15 s exercita o estado HOLDING.
+      - {latitude: -35.3629017, longitude: 149.1656708, altitude: 0.0, hold_time_s: 15.0}
+      # 40 m Leste do home (volta ao Sul).
+      - {latitude: -35.3632610, longitude: 149.1656708, altitude: 0.0, hold_time_s: 0.0}
