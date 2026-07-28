@@ -1,0 +1,32 @@
+# Hydrone Core dev/validation container.
+#
+#   network_mode: host  -> mavros reaches host SITL at localhost:14550/14560 and
+#                          DDS discovery reaches the distrobox on the host net.
+#   ipc: host           -> DDS shared-memory transport works across the boundary
+#                          (avoids /dev/shm warnings; harmless to drop).
+#
+# ROS_DOMAIN_ID / RMW_IMPLEMENTATION default to Humble's defaults; export them
+# before `up` (or in a .env file) to match whatever your distrobox uses, or the
+# distrobox won't see the topics.
+services:
+  hydrone:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: hydrone_core:humble
+    container_name: hydrone_core
+    network_mode: host
+    ipc: host
+    # PID 1 would otherwise be `sleep infinity`, which never reaps orphaned
+    # children -> crashed mavros nodes pile up as zombies. A real init reaps them.
+    init: true
+    environment:
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
+      RMW_IMPLEMENTATION: ${RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
+    volumes:
+      # Whole repo mounted read-write; colcon build/install/log land here on the
+      # host (see docker/README.md for the root-ownership caveat).
+      - ..:/workspace
+    working_dir: /workspace
+    stdin_open: true
+    tty: true

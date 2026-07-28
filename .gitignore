@@ -1,1 +1,9 @@
 *.vscode
+
+# Artefatos de build do colcon
+build/
+install/
+log/
+
+# CSVs de validacao/latencia (evidencia fica no relatorio, nao no repo)
+*.csv
