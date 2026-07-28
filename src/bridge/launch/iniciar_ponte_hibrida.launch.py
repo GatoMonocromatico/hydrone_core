@@ -21,28 +21,38 @@ def generate_launch_description():
     drone_mavros = Node(
         package='mavros',
         executable='mavros_node',
-        name='mavros',
-        namespace=DRONE_NAMESPACE,
+        # NB: no name='mavros' here. mavros_node is a two-node container
+        # (router + UAS); a blanket __node:=mavros remap collapses both to the
+        # same name and aborts with "create_service ... existing ... pullRequest".
+        # Namespace is nested as <vehicle>/mavros so mavros topics land at
+        # /hydrone_drone/mavros/* -- exactly what the bridge subscribes to
+        # (bridge is in /hydrone_drone and asks for the relative 'mavros/...').
+        namespace=f'{DRONE_NAMESPACE}/mavros',
         output='screen',
         parameters=[{
             'fcu_url': LaunchConfiguration('drone_fcu_url'),
             'target_system_id': 1,
             'system_id': 255,
             'component_id': 240,
+            # The param plugin busy-loops fetching ~1379 params from ArduPilot
+            # 4.8-dev, pegging a CPU core and starving DDS. The bridge needs
+            # none of these list-fetching plugins, so deny them.
+            'plugin_denylist': ['param', 'waypoint', 'geofence', 'rallypoint'],
         }],
     )
 
     boat_mavros = Node(
         package='mavros',
         executable='mavros_node',
-        name='mavros',
-        namespace=BOAT_NAMESPACE,
+        # See note on the drone node above: no name='mavros' remap.
+        namespace=f'{BOAT_NAMESPACE}/mavros',
         output='screen',
         parameters=[{
             'fcu_url': LaunchConfiguration('boat_fcu_url'),
             'target_system_id': 2,
             'system_id': 255,
             'component_id': 241,
+            'plugin_denylist': ['param', 'waypoint', 'geofence', 'rallypoint'],
         }],
     )
 
@@ -52,7 +62,13 @@ def generate_launch_description():
         name='hybrid_bridge',
         namespace=DRONE_NAMESPACE,
         output='screen',
-        parameters=[{'vehicle_id': DRONE_NAMESPACE}],
+        parameters=[{
+            'vehicle_id': DRONE_NAMESPACE,
+            # 2.0 m is tight for SITL GPS + vehicle overshoot; 5.0 m makes
+            # waypoint_reached fire reliably without being loose enough to
+            # trigger before the vehicle actually travels there.
+            'waypoint_acceptance_radius_m': 5.0,
+        }],
     )
 
     boat_bridge = Node(
@@ -61,7 +77,10 @@ def generate_launch_description():
         name='hybrid_bridge',
         namespace=BOAT_NAMESPACE,
         output='screen',
-        parameters=[{'vehicle_id': BOAT_NAMESPACE}],
+        parameters=[{
+            'vehicle_id': BOAT_NAMESPACE,
+            'waypoint_acceptance_radius_m': 5.0,
+        }],
     )
 
     return LaunchDescription([
